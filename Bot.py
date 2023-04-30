@@ -48,11 +48,12 @@ async def on_message(message) -> None:
         else:
             user = message.author
         # search csv for user.name. need format of csv from sven 
-        try:
-            id = user.id
+        id = user.id
+        
+        if messageDictionary.get(id) is not None:
             text = "\n".join(messageDictionary.get(id))
             await message.channel.send(train(id, text))
-        except:
+        else:
             await message.channel.send('user not present in database')
 
 client.run(TOKEN)
