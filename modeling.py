@@ -53,5 +53,5 @@ def train(id, text) -> None:
     model.summary()
     model.fit(train_x, train_y, epochs=1)
     
-    print(talk(model,char_to_int,int_to_char))
+    return talk(model,char_to_int,int_to_char)
     

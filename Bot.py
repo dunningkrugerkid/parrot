@@ -48,7 +48,7 @@ async def on_message(message) -> None:
         try:
             id = user.id
             text = "\n".join(messageDictionary.get(id))
-            train(id, text)
+            await message.get_channel.send(train(id, text))
         except:
             await message.get_channel().send('user not present in database')
 
