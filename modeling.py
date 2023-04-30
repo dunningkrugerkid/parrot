@@ -44,12 +44,12 @@ def train(id, text) -> None:
 
     train_y = tf.keras.utils.to_categorical(train_y)
 
-    model = tf.keras.Sequential([tf.keras.layers.Embedding(input_dim=len(chars), output_dim=64),
-    tf.keras.layers.LSTM(13728),
-    tf.keras.layers.Dense(2),            
+    model = tf.keras.Sequential([tf.keras.layers.Embedding(len(chars), 256),
+    tf.keras.layers.GRU(1024, return_sequences = True, return_state  = True),
+    tf.keras.layers.Dense(len(chars))           
     ])
 
-    model.compile(optimizer='Adam', loss='sparse_categorical_crossentropy')
+    model.compile(optimizer='Adam', loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True))
     model.summary()
     model.fit(train_x, train_y, epochs=1)
     
