@@ -3,10 +3,14 @@ import os
 import csv
 import tensorflow as tf
 import ast
+from dotenv import load_dotenv
 from modeling import *
 
-client = discord.Client()
+load_dotenv()
+intents = discord.Intents.default() 
+client = discord.Client(intents = intents)
 messageDictionary = {}
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 @client.event
 async def on_ready() -> None:
@@ -34,8 +38,7 @@ async def on_ready() -> None:
             messageList.append(message)
 
             messageDictionary.update({author:messageList})
-    
-    train()
+    print("load successful!")
     
 @client.event
 async def on_message(message) -> None:
@@ -44,13 +47,13 @@ async def on_message(message) -> None:
             user = message.mentions[0]
         else:
             user = message.author
-        # search csv for user.name. need format of csv from sven   
+        # search csv for user.name. need format of csv from sven 
         try:
             id = user.id
             text = "\n".join(messageDictionary.get(id))
-            await message.get_channel.send(train(id, text))
+            await message.channel.send(train(id, text))
         except:
-            await message.get_channel().send('user not present in database')
+            await message.channel.send('user not present in database')
 
-client.run("token")
+client.run(TOKEN)
         
