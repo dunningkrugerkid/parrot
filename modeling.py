@@ -4,32 +4,6 @@ import csv
 import tensorflow as tf
 import ast
 import numpy as np
-messageDictionary = {}
-
-def read():
-    with open('compsci.csv', newline='', encoding="utf8") as csvfile:
-            # parsing
-            reader = csv.reader(csvfile, delimiter=' ', quotechar='|')
-            for row in reader:
-                if(row[0].startswith("Author")):
-                    continue
-                sep = '-0'
-                row[0] = row[0].split(sep, 1)[0]
-                try:
-                    row = eval(row[0])
-                except:
-                    continue # null/malformed value, we don't need these
-                author = row[0]
-                message = row[2]
-                message = message.replace('"', "")
-                message = message.replace("[", "")
-                message = message.replace("]", "")
-                message = message.replace(",", " ")
-
-                messageList = messageDictionary.get(author) if messageDictionary.get(author) is not None else []
-                messageList.append(message)
-
-                messageDictionary.update({author:messageList})
 
 def talk(model, char_to_int, int_to_char) -> str:
     evaluated = [char_to_int[s] for s in "be epic"]
@@ -49,9 +23,8 @@ def talk(model, char_to_int, int_to_char) -> str:
 
 
 
-def train(id) -> None:
+def train(id, text) -> None:
     
-    text = "\n".join(messageDictionary.get(id))
     chars = sorted(list(set(text)))
     char_to_int = {ch:i for i, ch in enumerate(chars)}
     int_to_char = {i:ch for i, ch in enumerate(chars)}
@@ -74,14 +47,11 @@ def train(id) -> None:
     model = tf.keras.Sequential([tf.keras.layers.Embedding(input_dim=len(chars), output_dim=64),
     tf.keras.layers.LSTM(13728),
     tf.keras.layers.Dense(2),            
-])
+    ])
 
     model.compile(optimizer='Adam', loss='sparse_categorical_crossentropy')
     model.summary()
     model.fit(train_x, train_y, epochs=1)
     
     print(talk(model,char_to_int,int_to_char))
-
-
-train(147670976551845888)
     

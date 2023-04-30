@@ -3,6 +3,7 @@ import os
 import csv
 import tensorflow as tf
 import ast
+from modeling import *
 
 client = discord.Client()
 messageDictionary = {}
@@ -45,26 +46,11 @@ async def on_message(message) -> None:
             user = message.author
         # search csv for user.name. need format of csv from sven   
         try:
-            chat(user.id)
+            id = user.id
+            text = "\n".join(messageDictionary.get(id))
+            train(id, text)
         except:
             await message.get_channel().send('user not present in database')
 
-async def chat(id) -> None: 
-    # search db for user
-    train(id)
-    
-
-async def train(id) -> None:
-    if messageDictionary.get(id) != None:
-        vocab = list(sorted(set(messageDictionary.get(id))))
-    else:
-        return
-
-    ids_from_chars = tf.keras.layers.StringLookup(vocabulary=list(vocab), mask_token=None)
-    
-    chars_from_ids = tf.keras.layers.StringLookup(vocabulary=ids_from_chars.get_vocabulary(), invert=True, mask_token=None)
-
-    for ids in ids_from_chars.take(10):
-        print(chars_from_ids(ids).numpy().decode('utf-8'))
 client.run("token")
         
