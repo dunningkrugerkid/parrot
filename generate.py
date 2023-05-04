@@ -6,6 +6,7 @@ import ast
 import numpy as np
 import model as md
 import traceback
+import singlestep
 
 def train(id, text) -> None:
     MESSAGE_LENGTH = 80
@@ -38,7 +39,17 @@ def train(id, text) -> None:
         
         sample = tf.random.categorical(example_batch_predictions[0], num_samples=1)
         sample = tf.squeeze(sample, axis=-1).numpy()
-        return tf.strings.reduce_join(int_to_char(sample), axis=-1).numpy()
+
+        states = None
+        next_char = tf.constant(['squawk!'])
+        result = [next_char]
+        one_step_model = singlestep.OneStep(model, int_to_char, char_to_int)
+        for n in range(100):
+            next_char, states = one_step_model.generate_one_step(next_char, states=states)
+            result.append(next_char)
+
+        return tf.strings.join(result)[0].numpy().decode("utf-8")
+        
     except Exception as e:
         return traceback.format_exc()[:1999]
 
