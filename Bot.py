@@ -4,7 +4,7 @@ import csv
 import tensorflow as tf
 import ast
 from dotenv import load_dotenv
-from modeling import *
+from generate import *
 
 load_dotenv()
 intents = discord.Intents.default() 
@@ -51,6 +51,7 @@ async def on_message(message) -> None:
         id = user.id
         
         if messageDictionary.get(id) is not None:
+            await message.channel.send('training for user '+user.name)
             text = "\n".join(messageDictionary.get(id))
             await message.channel.send(train(id, text))
         else:
