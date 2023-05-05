@@ -51,7 +51,6 @@ async def on_message(message) -> None:
         id = user.id
         
         if messageDictionary.get(id) is not None:
-            await message.channel.send('training for user '+user.name)
             text = "\n".join(messageDictionary.get(id))
             await message.channel.send(train(id, text, user.name))
         else:
