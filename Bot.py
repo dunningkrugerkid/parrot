@@ -7,7 +7,8 @@ from dotenv import load_dotenv
 from generate import *
 
 load_dotenv()
-intents = discord.Intents.default() 
+intents = discord.Intents.default()
+intents.message_content = True
 client = discord.Client(intents = intents)
 messageDictionary = {}
 TOKEN = os.getenv("DISCORD_TOKEN")
