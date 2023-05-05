@@ -15,7 +15,7 @@ def train(id, text, name) -> None:
     try:
     
         try:
-            model = tf.keras.models.load_model(name)
+            model = tf.keras.models.load_model('/models/'+name+".h5")
 
         except IOError:
             chars = sorted(list(set(text)))
