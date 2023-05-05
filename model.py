@@ -12,6 +12,7 @@ class ParrotGen(tf.keras.Model):
     self.dense = tf.keras.layers.Dense(vocab_size+1)
 
   def call(self, inputs, states=None, return_state=False, training=False):
+    print("modeling")
     x = inputs
     x = self.embedding(x, training=training)
     if states is None:

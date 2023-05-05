@@ -52,7 +52,8 @@ async def on_message(message) -> None:
         
         if messageDictionary.get(id) is not None:
             text = "\n".join(messageDictionary.get(id))
-            await message.channel.send(train(id, text, user.name))
+            async with message.channel.typing():
+                await message.channel.send(train(id, text, user.name))
         else:
             await message.channel.send('user not present in database')
 

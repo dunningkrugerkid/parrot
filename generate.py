@@ -14,10 +14,9 @@ def train(id, text, name) -> None:
     BATCH = 128
     BUFF = 10000
     try:
-        if os.name == 'nt':
-            path = '..\\models\\'  +name+".ckpt"
-        else:
-            path = '../models/' + name + ".ckpt"
+
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        path = str(os.path.join(dir_path, "models/"+name+".ckpt"))
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=path,
                                                  save_weights_only=True,
                                                  verbose=1)
@@ -45,7 +44,7 @@ def train(id, text, name) -> None:
             model.load_weights(path)
 
         except:
-            model.fit(dataset, epochs=50, callbacks=[cp_callback])
+            model.fit(dataset, epochs=50, callbacks=[cp_callback], verbose = 1)
 
         for input_example_batch, target_example_batch in dataset.take(1):
             example_batch_predictions = model(input_example_batch)
