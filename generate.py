@@ -15,9 +15,9 @@ def train(id, text, name) -> None:
     BUFF = 10000
     try:
         if os.name == 'nt':
-            path = '\\models\\'  +name+".ckpt"
+            path = '..\\models\\'  +name+".ckpt"
         else:
-            path = '/models/' + name + ".ckpt"
+            path = '../models/' + name + ".ckpt"
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=path,
                                                  save_weights_only=True,
                                                  verbose=1)
