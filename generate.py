@@ -45,7 +45,7 @@ def train(id, text, name) -> None:
             model.load_weights(path)
 
         except:
-            model.fit(dataset, epochs=30, callbacks=[cp_callback])
+            model.fit(dataset, epochs=50, callbacks=[cp_callback])
 
         for input_example_batch, target_example_batch in dataset.take(1):
             example_batch_predictions = model(input_example_batch)
@@ -64,7 +64,7 @@ def train(id, text, name) -> None:
         
         if not os.path.exists(path):
             os.makedirs(path)
-            model.save_weights(path.format(epoch=30))
+            model.save_weights(path.format(epoch=50))
         return tf.strings.join(result)[0].numpy().decode("utf-8")
         
     except Exception as e:
