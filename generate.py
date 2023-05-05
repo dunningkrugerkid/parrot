@@ -44,6 +44,7 @@ def train(id, text, name) -> None:
             model.load_weights(path)
 
         except:
+            print("starting fit...")
             model.fit(dataset, epochs=50, callbacks=[cp_callback], verbose = 1)
 
         for input_example_batch, target_example_batch in dataset.take(1):
