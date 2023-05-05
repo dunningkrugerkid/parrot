@@ -1,6 +1,3 @@
 *.csv
-<<<<<<< HEAD
 .env
-=======
-.env
->>>>>>> 74170a499d04999340745ef8c3e5d329fcdeacee
+models/
