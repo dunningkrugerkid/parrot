@@ -13,8 +13,9 @@ def train(id, text, name, seed) -> None:
     MESSAGE_LENGTH = 80
     BATCH = 128
     BUFF = 10000
+    print("debug")
     try:
-
+        print("made it to training")
         dir_path = os.path.dirname(os.path.realpath(__file__))
         path = str(os.path.join(dir_path, "models/"+name+".ckpt"))
         cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=path,
@@ -32,6 +33,7 @@ def train(id, text, name, seed) -> None:
 
         dataset = (dataset.shuffle(BUFF).batch(BATCH, drop_remainder=True).prefetch(tf.data.experimental.AUTOTUNE))
         size = len(char_to_int.get_vocabulary())
+        print("made it to creating model")
 
         model = md.ParrotGen(
         vocab_size=len(chars),
@@ -57,7 +59,7 @@ def train(id, text, name, seed) -> None:
         if seed == "":
             next_char = tf.constant(['squawk!\n\n'])
         else:
-            next_char = tf.constant(['squawk!\n\n' + " " + seed])
+            next_char = tf.constant(['squawk!\n\n' + seed])
         result = [next_char]
         one_step_model = singlestep.OneStep(model, int_to_char, char_to_int)
         for n in range(100):

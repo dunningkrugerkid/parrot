@@ -8,7 +8,7 @@ from generate import *
 
 load_dotenv()
 intents = discord.Intents.default()
-intents.message_content = True
+intents.message_content = True 
 client = discord.Client(intents = intents)
 messageDictionary = {}
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -52,16 +52,12 @@ async def on_message(message) -> None:
         id = user.id
         
         if messageDictionary.get(id) is not None:
+            print(message.content.split())
             text = "\n".join(messageDictionary.get(id))
-            potential_seed = message.content.split()[-1]
-            if not potential_seed.startswith("@") and not potential_seed.startswith("parrot!"):
-                seed = message.content.split()[-1]
-            else:
-                seed = ""
+            seed = "" + " ".join([x for x in message.content.split() if (not x.startswith("<@") and not(x.startswith("parrot!")))])
             async with message.channel.typing():
                 await message.channel.send(train(id, text, user.name, seed))
         else:
             await message.channel.send('user not present in database')
 
 client.run(TOKEN)
-        
