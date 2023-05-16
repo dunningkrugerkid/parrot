@@ -9,7 +9,7 @@ import traceback
 import singlestep
 import pathlib
 
-def train(id, text, name) -> None:
+def train(id, text, name, seed) -> None:
     MESSAGE_LENGTH = 80
     BATCH = 128
     BUFF = 10000
@@ -54,7 +54,10 @@ def train(id, text, name) -> None:
         sample = tf.squeeze(sample, axis=-1).numpy()
 
         states = None
-        next_char = tf.constant(['squawk!\n\n'])
+        if seed == "":
+            next_char = tf.constant(['squawk!\n\n'])
+        else:
+            next_char = tf.constant(['squawk!\n\n' + " " + seed])
         result = [next_char]
         one_step_model = singlestep.OneStep(model, int_to_char, char_to_int)
         for n in range(100):

@@ -53,8 +53,13 @@ async def on_message(message) -> None:
         
         if messageDictionary.get(id) is not None:
             text = "\n".join(messageDictionary.get(id))
+            potential_seed = message.content.split()[-1]
+            if not potential_seed.startswith("@") and not potential_seed.startswith("parrot!"):
+                seed = message.content.split()[-1]
+            else:
+                seed = ""
             async with message.channel.typing():
-                await message.channel.send(train(id, text, user.name))
+                await message.channel.send(train(id, text, user.name, seed))
         else:
             await message.channel.send('user not present in database')
 
