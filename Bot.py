@@ -69,8 +69,8 @@ async def on_message(message) -> None:
                 text = "\n".join(messageDictionary.get(id))
                 seed = "" + " ".join([x for x in message.content.split() if (not x.startswith("<@") and not(x.startswith("parrot!")))])
                 async with message.channel.typing():
-                    train(id, text, user.name, seed)
-                    await message.channel.send("completed training for " + user.name)
+                    train(id, text, member.name, seed)
+                    await message.channel.send("completed training for " + member.name)
 
 
 client.run(TOKEN)
