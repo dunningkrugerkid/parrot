@@ -39,8 +39,7 @@ async def on_ready() -> None:
             messageList = messageDictionary.get(author) if messageDictionary.get(author) is not None else []
             if not (message.startswith("`") and message.endswith("`")):
                 messageList.append(message)
-
-            messageDictionary.update({author:messageList})
+                messageDictionary.update({author:messageList})
     print("load successful!")
     
 @client.event
@@ -49,8 +48,11 @@ async def on_message(message) -> None:
         if len(message.mentions) > 0:
             user = message.mentions[0]
         else:
-            user = message.author
-        # search csv for user.name. need format of csv from sven 
+            try:
+                user = message.author
+            except: # we will only get an exception here if it's a webhook, this is fine
+                return
+        # search csv for user.name. need format of csv from sven
         id = user.id
         
         if messageDictionary.get(id) is not None:
